@@ -1,1 +1,28 @@
-Docker Top
+docker top <starting_2_letters_of_containerId>
+
+docker container stop <containerId- for more than on container can be comma seperated>==> To stop container
+example : docker container stop ee,ab
+
+docker container prone ==> To delete inactive container
+
+apt-get install/update ==> To install/update packages
+
+history - Unix command to view histoical command
+
+docker commit <starting_2_letters_of_containerId> <image_name_as_your_wish>
+
+docker container ls => To list all running container
+
+docker search <image_name> ==> To Search images. Offical OK means no vulnerabilities
+
+docker attach <starting_2_letters_of_containerId> ==> Alternate for docker exec
+
+ip - unix command
+
+docker rin -itd ==> itd : interactive terminal dettach mode
+
+
+
+ps aux | grep nginx
+ 
+amzon - public IP - 13.126.146.226
