@@ -21,8 +21,16 @@ ip - unix command
 
 docker rin -itd ==> itd : interactive terminal dettach mode
 
+docker login ==> To login... Credential has to be provided by you
 
+ADD & COPY ==> Dockerfile
 
-ps aux | grep nginx
+ps aux | grep nginx ==> unix
  
 amzon - public IP - 13.126.146.226
+
+master - private IP -  172.31.38.4
+master 2- 		172.31.38.115
+master 2- 		172.35.45.211
+
+
