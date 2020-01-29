@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata: # POD definition
+  name: nginx-deployment # name of the POD
+  labels:
+    name: nginx # like tagging
+spec:
+  containers: 
+  - name: nginx-deployment
+    image: nginx
+    ports:
+    - containerPort: 80

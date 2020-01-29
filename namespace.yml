@@ -1,0 +1,4 @@
+apiVersion: v1 # which api version
+kind: Namespace # Telling k8 to use namespace API
+metedata:
+  name: development
