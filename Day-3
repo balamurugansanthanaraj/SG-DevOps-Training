@@ -1,0 +1,97 @@
+ yum install -y yum-utils \
+>   device-mapper-persistent-data \
+>   lvm2
+*********************************
+
+yum-config-manager \
+>     --add-repo \
+>     https://download.docker.com/linux/centos/docker-ce.repo
+**********************************
+
+ yum install docker-ce docker-ce-cli containerd.io
+**************************
+
+[root@ip-172-31-4-212 ~]# service docker start
+Redirecting to /bin/systemctl start docker.service
+***************************************
+
+[root@ip-172-31-4-212 ~]# chkconfig docker on
+Note: Forwarding request to 'systemctl enable docker.service'.
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
+
+*********************************
+how to install Kubetnetes  ==> https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/ ==> To install kubadm
+
+    1  yum install -y yum-utils   device-mapper-persistent-data   lvm2
+    2  yum-config-manager     --add-repo     https://download.docker.com/linux/centos/docker-ce.repo
+    3  service docker start
+    4  yum install docker-ce docker-ce-cli containerd.io
+    5  service docker start
+    6  chkconfig docker on
+    7  cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+
+    8  setenforce 0
+    9  sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+   10  yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+   11  systemctl enable --now kubelet
+   12  cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+
+   13  sysctl --system
+   14  systemctl daemon-reload
+   15  systemctl restart kubelet
+***************************************************
+
+Set hostname ==> hostnamectl set-hostname --static k8snode2
+perserve_hostname: true ==>  vi /etc/cloud/cloud.cfg
+
+*************************
+vi /etc/hosts ==> past below on all mahcines ==> all are private Ips
+172.31.4.212 k8smaster
+172.31.47.136 k8snode1
+172.31.38.68 k8snode2
+
+Then reboot
+
+*******************************
+
+On master machine -- type -- kubeadm init
+
+**********************
+kubeadm join 172.31.4.212:6443 --token b0fxbi.mkx4l99jf4cdwkju \
+    --discovery-token-ca-cert-hash sha256:d3f966d2b3c26f4e8fb861e0ed47b97b253c72921528d019a6f7a90c1ac88edc
+	
+if it fails, Add inbound rule on master mahcine (Security group)
+custom : 6443 : any
+******************************
+
+run below command
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+To install CNI(container network interface plugin) plugin simillar to OVERLAY
+
+Then run, all status should be ready
+[root@k8smaster ~]# kubectl get nodes
+NAME        STATUS   ROLES    AGE   VERSION
+k8smaster   Ready    master   21m   v1.17.2
+k8snode1    Ready    <none>   14m   v1.17.2
+k8snode2    Ready    <none>   11m   v1.17.2
+
+
+	
+
+
+
+
+
+
